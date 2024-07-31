@@ -1,1 +1,1 @@
-# my_scripts
+# Scripts for work automation
