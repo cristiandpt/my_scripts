@@ -33,8 +33,9 @@ handle_choice() {
     case $1 in
         1) source ./custom_profile.sh "$output_latex_file";;
         2) source  ./cv_generator.sh "$template_path" "$output_latex_file" ;;
-        3) echo "You selected Option 3" ;;
-        4) echo "Exiting..." ; exit 0 ;;
+        3) source ./jobs_experience.sh "$output_latex_file";;
+        4) source ./tech_skills.sh "$output_latex_file";;
+        5) echo "Exiting..." ; exit 0 ;;
         *) echo "Invalid choice. Please select a number between 1 and 4." ;;
     esac
 }
