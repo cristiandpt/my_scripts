@@ -4,6 +4,11 @@ options=("1. Professional Profile" "3. Education" "2. Courses and Certifications
 
 output_latex_file="../output/output_$(date +%Y-%m-%d_%H-%M-%S).tex"
 
+#!/bin/bash
+
+# Get the directory of the current script
+script_dir=$(dirname "$0")
+
 print_options() {
     for option in "${options[@]}"; do
         echo "$option"
@@ -41,8 +46,24 @@ handle_choice() {
     esac
 }
 
+lookup_templates() {
+    found_templates=$(find "$script_dir/../templates" -type f -name "*.tex" -print | sed "s|$script_dir/../|../|")
+    result_count=$(echo "$found_templates" | wc -l)
+    if [ "$result_count" -gt 0 ]; then
+	echo "Found $result_count templates"
+	for template in $found_templates; do 
+	    echo -e "\t - $template"
+	done
+	echo "Write our the path of one of that"
+    fi
+}
+
 prompt_for_input() {
-    echo "Enter the template path: "
+    echo -e "Welcome to CV Generator \n"
+    echo "To get started, enter the template path: "
+    # Find files with a specific extension (.txt) in the parent directory
+    # and print the relative path (from the script location)
+    lookup_templates	    
     read -r template_path #< <(echo "a path") # This commented code was for testing the programaticality input
     if [ -z "$template_path" ]; then
         template_path="../templates/template_with_photo.tex"
