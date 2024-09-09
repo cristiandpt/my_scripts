@@ -1,6 +1,6 @@
 #!/bin/bash
 
-options=("1. Professional Profile" "3. Education" "2. Courses and Certifications" "3. Job experience" "4. Self Description")
+options=("1. Professional Profile" "2. Education" "3. Courses and Certifications" "4. Job experience" "5. Self Description")
 
 output_latex_file="../output/output_$(date +%Y-%m-%d_%H-%M-%S).tex"
 
@@ -23,7 +23,7 @@ header() {
 
 footer() {
     echo "==========================="
-    echo -n "Please enter your choice [1-4]: "
+    echo -n "Please enter your choice [1-5]: "
 }
 
 # Function to display the menu
@@ -38,10 +38,11 @@ display_menu() {
 handle_choice() {
     case $1 in
         1) source ./custom_profile.sh "$output_latex_file";;
-        2) source  ./cv_generator.sh "$template_path" "$output_latex_file" ;;
-        3) source ./jobs_experience.sh "$output_latex_file";;
-        4) source ./tech_skills.sh "$output_latex_file";;
-        5) echo "Exiting..." ; exit 0 ;;
+        2) source ./insert_education.sh "$template_path" "$output_latex_file" ;;
+        3) source ./cv_generator.sh "$template_path" "$output_latex_file" ;;
+        4) source ./jobs_experience.sh "$output_latex_file";;
+	5) source ./tech_skills.sh "$output_latex_file";;
+	5) echo "Exiting..." ; exit 0 ;;
         *) echo "Invalid choice. Please select a number between 1 and 4." ;;
     esac
 }
