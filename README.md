@@ -30,3 +30,7 @@ The templates latex files lives in
 ### Select a option for populate the a part of the CV
 
 ![Menu selection](./images/menu_selection.png)
+
+### The structure of the project for look for every part of the cv is
+
+![project structure](./images/project_structure.png)
