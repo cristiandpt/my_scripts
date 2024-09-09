@@ -1,0 +1,76 @@
+#!/bin/bash
+
+echo "Enter the hobbies path: "
+read -r hobbies
+
+output_latex_file=$1
+
+result=$(awk -F'-'  '
+{
+- hobbie: "Reading"
+    description: "Engineering Maintainable Android Apps"
+
+    getline
+    split($0, hobbie_entry, ":")
+    gsub(/"/, "", hobbie_entry[2])
+    hobbie = hobbie_entry[2]  
+    getline
+    split($0, description_entry, ":")
+    gsub(/"/, "", description_entry[2])
+    description = description_entry[2]
+    printf("    \\cvitem{%s}{%s}\n", hobbie, description)
+}
+END {
+    # Print the LaTeX table end
+    print "\\end{cvtable}"
+}
+' "$hobbies")
+
+result="\cvsection{Hobbies}\n\\begin{cvtable}[3]\n${result}\n"
+
+echo "$result"
+
+profile_value=$(echo "$result" | sed 's/^ *//;s/ *$//')
+sed -i "/[[:space:]]*%[[:space:]]*Job Experieence /a $profile_value" $1
+echo "Modified $1 with job experience: $profile_value"
+
+
+
+#section_title="Experiencia laboral"
+#table_options="[3]"
+
+#result=$(awk -F'-v' -v title="$section_title" -v options="$table_options" '
+#BEGIN {
+#    # Print the LaTeX section and table start using external variables
+#    print "\\cvsection{" title "}"
+#    print "\\begin{cvtable}" options
+#}
+#
+#{
+#    getline
+#    split($0, position_entry, ":")
+#    gsub(/"/, "", position_entry[2])
+#    position = position_entry[2]  
+#    getline
+#    split($0, enterprise_entry, ":")
+#    gsub(/"/, "", enterprise_entry[2])
+#    enterprise = enterprise_entry[2]
+#    getline
+#    split($0, description_entry, ":")
+#    gsub(/"/, "", description_entry[2])
+#    description = description_entry[2]
+#    getline
+#    split($0, range_entry, ":")
+#    gsub(/"/, "", range_entry[2])
+#    range = range_entry[2]
+#    # Append formatted string to result
+#    printf("    \\cvitem{%s}{%s}{%s}{%s}\n", position, enterprise, description, range)
+#}
+#END {
+#    # Print the LaTeX table end
+#    print "\\end{cvtable}"
+#}' "$job_experiences")
+#
+## Print or use the result
+#echo "$result"
+#
