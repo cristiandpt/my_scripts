@@ -24,7 +24,14 @@ result=$(awk -F'-'  '
     gsub(/"/, "", range_entry[2])
     range = range_entry[2]
     printf("    \\cvitem{%s}{%s}{%s}{%s}\n", position, enterprise, description, range)
-}' "$job_experiences")
+}
+END {
+    # Print the LaTeX table end
+    print "\\end{cvtable}"
+}
+' "$job_experiences")
+
+result="\cvsection{Experiencia laboral}\n\\begin{cvtable}[3]\n${result}\n"
 
 echo "$result"
 

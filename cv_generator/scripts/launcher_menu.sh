@@ -56,7 +56,7 @@ lookup_templates() {
 	for template in $found_templates; do 
 	    echo -e "\t - $template"
 	done
-	echo "Write our the path of one of that"
+	echo "Write our the path of one of these"
     fi
 }
 
