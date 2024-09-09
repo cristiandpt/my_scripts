@@ -1,6 +1,6 @@
 #!/bin/bash
 
-options=("1. Professional Profile" "2. Education" "3. Courses and Certifications" "4. Job experience" "5. Self Description")
+options=("1. Professional Profile" "2. Education" "3. Courses and Certifications" "4. Job experience" "5. Self Description" "6. Hobbies and activities" "7. Exit")
 
 output_latex_file="../output/output_$(date +%Y-%m-%d_%H-%M-%S).tex"
 
@@ -42,7 +42,8 @@ handle_choice() {
         3) source ./cv_generator.sh "$template_path" "$output_latex_file" ;;
         4) source ./jobs_experience.sh "$output_latex_file";;
 	5) source ./tech_skills.sh "$output_latex_file";;
-	5) echo "Exiting..." ; exit 0 ;;
+	6) source ./hobbies_activities.sh "$output_latex_file";;
+	7) echo "Exiting..." ; exit 0 ;;
         *) echo "Invalid choice. Please select a number between 1 and 4." ;;
     esac
 }
