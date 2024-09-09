@@ -27,3 +27,6 @@ The templates latex files lives in
 ../templates/
 ```
 
+### Select a option for populate the a part of the CV
+
+![Menu selection](../parent_folder/menu_selection.png)
