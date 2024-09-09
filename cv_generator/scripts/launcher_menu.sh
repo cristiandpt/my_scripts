@@ -1,5 +1,6 @@
 #!/bin/bash
-options=("1. Professional Profile" "2. Courses and Certifications" "3. Job experience" "4. Self Description")
+
+options=("1. Professional Profile" "3. Education" "2. Courses and Certifications" "3. Job experience" "4. Self Description")
 
 output_latex_file="../output/output_$(date +%Y-%m-%d_%H-%M-%S).tex"
 
