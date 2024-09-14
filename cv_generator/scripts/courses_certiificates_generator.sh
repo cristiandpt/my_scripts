@@ -21,6 +21,7 @@ parse_yaml() {
     }'
 }
 
+source ../utils/files_in_directory_list.sh "../scripts" "courses" "*.yaml"
 echo "Enter Profile YAML file..."
 read -r input_yaml_file
 # Load YAML variables into environment
