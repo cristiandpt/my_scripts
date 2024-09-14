@@ -1,4 +1,5 @@
 #!/bin/bash
+./files_in_directory_list.sh "../scripts" "hobbies_activities" "*.yaml"
 
 echo "Enter the hobbies path: "
 read -r hobbies

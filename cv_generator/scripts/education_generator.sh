@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./files_in_directory_list.sh "../scripts" "education" "*.yaml"
+
 echo "Enter the education path: "
 read -r education
 

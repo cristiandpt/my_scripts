@@ -1,4 +1,6 @@
-echo "Enter the jub profile path: "
+./files_in_directory_list.sh "../scripts" "profile" "*.yaml"
+
+echo "Enter the job profile path: "
 read -r profile_path
 
 # Extract the profile value from the YAML file

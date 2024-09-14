@@ -49,15 +49,7 @@ handle_choice() {
 }
 
 lookup_templates() {
-    found_templates=$(find "$script_dir/../templates" -type f -name "*.tex" -print | sed "s|$script_dir/../|../|")
-    result_count=$(echo "$found_templates" | wc -l)
-    if [ "$result_count" -gt 0 ]; then
-	echo "Found $result_count templates"
-	for template in $found_templates; do 
-	    echo -e "\t - $template"
-	done
-	echo "Write our the path of one of these"
-    fi
+    source ../utils/files_in_directory_list.sh "$script_dir" "templates" "*.tex"
 }
 
 prompt_for_input() {

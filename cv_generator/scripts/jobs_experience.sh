@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./files_in_directory_list.sh "../scripts" "experience" "*.yaml"
+
 echo "Enter the job experience path: "
 read -r job_experiences
 
