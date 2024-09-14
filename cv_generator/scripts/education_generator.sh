@@ -7,11 +7,6 @@ output_latex_file=$1
 
 result=$(awk -F'-'  '
 {
-- year: "2022 -- 2024"
-    grade: "Ingeniería en Sistemas"
-    institution: "Universidad del Valle"
-    focus: "Ciclo de desarrollo de software"
-
     getline
     split($0, year_entry, ":")
     gsub(/"/, "", year_entry[2])
@@ -36,7 +31,7 @@ END {
 }
 ' "$education")
 
-result="\cvsection{Experiencia laboral}\n\\begin{cvtable}[3]\n${result}\n"
+result="\cvsection{Educación}\n\\begin{cvtable}[3]\n${result}\n"
 
 echo "$result"
 
