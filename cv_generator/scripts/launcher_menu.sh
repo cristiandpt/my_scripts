@@ -43,7 +43,7 @@ handle_choice() {
         4) source ./jobs_experience_generator.sh "$output_latex_file";;
         5) source ./self_description_generator.sh "$output_latex_file";;
         6) source ./tech_skills.sh "$output_latex_file";;
-        7) source ./hobbies_activities.sh "$output_latex_file";;
+        7) source ./hobbies_activities_generator.sh "$output_latex_file";;
         8) echo "Exiting..." ; exit 0 ;;
         *) echo "Invalid choice. Please select a number between 1 and 4." ;;
     esac

@@ -1,5 +1,5 @@
 #!/bin/bash
-./files_in_directory_list.sh "../scripts" "hobbies_activities" "*.yaml"
+source ../utils/files_in_directory_list.sh "../scripts" "hobbies_activities" "*.yaml"
 
 echo "Enter the hobbies path: "
 read -r hobbies
@@ -8,9 +8,6 @@ output_latex_file=$1
 
 result=$(awk -F'-'  '
 {
-- hobbie: "Reading"
-    description: "Engineering Maintainable Android Apps"
-
     getline
     split($0, hobbie_entry, ":")
     gsub(/"/, "", hobbie_entry[2])
@@ -21,19 +18,21 @@ result=$(awk -F'-'  '
     description = description_entry[2]
     printf("    \\cvitem{%s}{%s}\n", hobbie, description)
 }
-END {
-    # Print the LaTeX table end
-    print "\\end{cvtable}"
-}
 ' "$hobbies")
 
-result="\cvsection{Hobbies}\n\\begin{cvtable}[3]\n${result}\n"
+result=$(cat <<EOF
+\cvsection{\LARGE Hobbies}
+\begin{cvtable}[3]
+${result}
+\end{cvtable}
+EOF
+)
 
 echo "$result"
 
-profile_value=$(echo "$result" | sed 's/^ *//;s/ *$//')
-sed -i "/[[:space:]]*%[[:space:]]*Job Experieence /a $profile_value" $1
-echo "Modified $1 with job experience: $profile_value"
+hobbies_value=$(echo "$result" | sed 's/^ *//;s/ *$//')
+
+source ./hobbies_activities_insertor.sh "$output_latex_file" "$hobbies_value"
 
 
 
