@@ -34,7 +34,7 @@ echo "$result"
 #sed -i "s/\\date{.*}/\\date{${config_date}} % DATE/" document.tex
 
 ## Define the output LaTeX file
-output_latex_file=$2
+output_latex_file=$1
 temp_file="temp.tex" 
 
 # Convert the YAML to LaTeX \cvitem entries
@@ -55,12 +55,8 @@ awk '
     }
 ' "$input_yaml_file" > "$temp_file"
 
-# Define the input LaTeX file and the output LaTeX fragment file
-input_latex_file="$1"  # Your main LaTeX document
- # Temporary file to store intermediate results
-
 # Extract everything before \begin{cvtable} and after \end{cvtable}
-source ./generate_latex.sh "$input_latex_file" "$output_latex_file" "$temp_file"
+source ./insert_courses.sh "$output_latex_file" "$temp_file"
 
 
 

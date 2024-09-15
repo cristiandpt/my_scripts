@@ -1,15 +1,19 @@
 #!/bin/bash
 
-input_latex_file=$1
-output_latex_file=$2
-temp_file=$3
+output_latex_file=$1
+temp_courses_path=$2
 
-sed -n '1,/\\begin{cvtable}[[:space:]]*%[[:space:]]*Courses and Certifications/p' "$input_latex_file" > "$output_latex_file"
-sed -n '/\\end{cvtable}[[:space:]]*%[[:space:]]*Courses and Certifications/,$p' "$input_latex_file" >> "$output_latex_file"
+echo "$courses_result" > temp_courses_result
 
+sed -n '1,/[[:space:]]*% -> Courses and Certifications/p' "$output_latex_file" > temp_file
+sed -n '/[[:space:]]*% <- Courses and Certifications/,$p' "$output_latex_file" >> temp_file
+
+mv temp_file "$output_latex_file"
 # Insert the new \cvitem entries into the main LaTeX document
-sed -i '/\\begin{cvtable}[[:space:]]*%[[:space:]]*Courses and Certifications/r '"$temp_file"'' "$output_latex_file"
+sed -i '/[[:space:]]*% -> Courses and Certifications/r '"$temp_courses_path"'' "$output_latex_file"
 # Clean up temporary file if it exists
-[ -f "$temp_file" ] && rm "$temp_file"
+[ -f temp_courses_result ] && rm temp_courses_result
+[ -f "$temp_courses_path" ] && rm "$temp_courses_path"
+
 
 echo "LaTeX document generated with new \cvitem entries at $temp_file."

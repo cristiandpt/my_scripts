@@ -1,7 +1,6 @@
 #!/bin/bash
 
-./files_in_directory_list.sh "../scripts" "education" "*.yaml"
-
+source ../utils/files_in_directory_list.sh "../scripts" "education" "*.yaml"
 echo "Enter the education path: "
 read -r education
 
@@ -33,10 +32,16 @@ END {
 }
 ' "$education")
 
-result="\cvsection{Educación}\n\\begin{cvtable}[3]\n${result}\n"
+result=$(cat <<EOF
+\cvsection{Educación}
+\cvsubsection{Estudios}
+\begin{cvtable}[1.5]
+${result}
+\end{cvtable}
+EOF
+)
+
 
 echo "$result"
 
-profile_value=$(echo "$result" | sed 's/^ *//;s/ *$//')
-sed -i "/[[:space:]]*%[[:space:]]*Job Experieence /a $profile_value" $1
-echo "Modified $1 with job experience: $profile_value"
+source ./education_insertion.sh "$output_latex_file" "$result"
