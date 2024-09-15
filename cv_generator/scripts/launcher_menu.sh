@@ -40,7 +40,7 @@ handle_choice() {
         1) source ./custom_profile.sh "$output_latex_file";;
         2) source ./education_generator.sh "$output_latex_file" ;;
         3) source ./courses_certiificates_generator.sh "$output_latex_file" ;;
-        4) source ./jobs_experience.sh "$output_latex_file";;
+        4) source ./jobs_experience_generator.sh "$output_latex_file";;
         5) source ./tech_skills.sh "$output_latex_file";;
         6) source ./hobbies_activities.sh "$output_latex_file";;
         7) echo "Exiting..." ; exit 0 ;;

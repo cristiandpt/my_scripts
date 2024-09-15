@@ -1,8 +1,8 @@
 #!/bin/bash
 
-./files_in_directory_list.sh "../scripts" "experience" "*.yaml"
+source ../utils/files_in_directory_list.sh "../scripts" "experience" "*.yaml"
 
-echo "Enter the job experience path: "
+echo "Enter the job experience file path: "
 read -r job_experiences
 
 output_latex_file=$1
@@ -33,10 +33,13 @@ END {
 }
 ' "$job_experiences")
 
-result="\cvsection{Experiencia laboral}\n\\begin{cvtable}[3]\n${result}\n"
+result=$(cat <<EOF
+\cvsection{Experiencia laboral}
+\begin{cvtable}[3]
+${result}
+EOF
+)
 
 echo "$result"
 
-profile_value=$(echo "$result" | sed 's/^ *//;s/ *$//')
-sed -i "/[[:space:]]*%[[:space:]]*Job Experieence /a $profile_value" $1
-echo "Modified $1 with job experience: $profile_value"
+./experience_insertor.sh "$output_latex_file" "$result"
