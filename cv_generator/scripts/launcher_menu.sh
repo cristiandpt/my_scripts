@@ -1,6 +1,6 @@
 #!/bin/bash
 
-options=("1. Professional Profile" "2. Education" "3. Courses and Certifications" "4. Job experience" "5. Self Description" "6. Hobbies and activities" "7. Exit")
+options=("1. Professional Profile" "2. Education" "3. Courses and Certifications" "4. Job experience" "5. Self Description" "6. Technical Skills" "7. Hobbies and activities" "8. Exit")
 
 output_latex_file="../output/output_$(date +%Y-%m-%d_%H-%M-%S).tex"
 
@@ -41,9 +41,10 @@ handle_choice() {
         2) source ./education_generator.sh "$output_latex_file" ;;
         3) source ./courses_certiificates_generator.sh "$output_latex_file" ;;
         4) source ./jobs_experience_generator.sh "$output_latex_file";;
-        5) source ./tech_skills.sh "$output_latex_file";;
-        6) source ./hobbies_activities.sh "$output_latex_file";;
-        7) echo "Exiting..." ; exit 0 ;;
+        5) source ./self_description_generator.sh "$output_latex_file";;
+        6) source ./tech_skills.sh "$output_latex_file";;
+        7) source ./hobbies_activities.sh "$output_latex_file";;
+        8) echo "Exiting..." ; exit 0 ;;
         *) echo "Invalid choice. Please select a number between 1 and 4." ;;
     esac
 }

@@ -21,7 +21,7 @@ parse_yaml() {
 }
 output_latex_file=$1
 source ../utils/files_in_directory_list.sh "../scripts" "profile" "*.yaml"
-echo "Enter the job profile path: "
+echo "Enter the personal profile path: "
 read -r profile_path
 
 result=$(parse_yaml "$profile_path" "")
@@ -34,6 +34,5 @@ profile_value=$(awk -F':' '/^profile:/ {print $2}' "$profile_path")
 profile_value=$(echo "$profile_value" | sed 's/^ *//;s/ *$//')
 #sed -i "/[[:space:]]*%[[:space:]]*Job profile /a $profile_value" $1
 
-echo "Modified $1 with profile content: $profile_value"
 source ./insert_custom_profile.sh "$output_latex_file" "$profile_value"
 
