@@ -21,9 +21,29 @@ parse_yaml() {
     }'
 }
 
+function iterate_over_courses() {
+    local -n courses_array="$1"
+    echo "-----------Courses selected-------------"
+    for course in "${courses_array[@]}"; do
+        echo -e "$course"
+    done
+    echo "-------------------------------"
+}
+
+courses_templates_to_merge=()
+
 source ../utils/files_in_directory_list.sh "../scripts" "courses" "*.yaml"
-echo "Enter Courses YAML file..."
-read -r input_yaml_file
+while true; do
+    echo "Enter Courses YAML file...(done for exit)"
+    read -r input_yaml_file
+    courses_templates_to_merge+=("$input_yaml_file")
+    if [ "$input_yaml_file" = "done" ]; then
+        break
+    fi
+    iterate_over_courses courses_templates_to_merge
+done
+
+
 # Load YAML variables into environment
 result=$(parse_yaml "$input_yaml_file" "")
 echo "$result"
