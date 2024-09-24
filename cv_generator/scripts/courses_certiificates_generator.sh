@@ -36,33 +36,52 @@ source ../utils/files_in_directory_list.sh "../scripts" "courses" "*.yaml"
 while true; do
     echo "Enter Courses YAML file...(done for exit)"
     read -r input_yaml_file
-    courses_templates_to_merge+=("$input_yaml_file")
     if [ "$input_yaml_file" = "done" ]; then
         break
     fi
-    iterate_over_courses courses_templates_to_merge
+     if [[ -f "$input_yaml_file" ]]; then
+        courses_templates_to_merge+=("$input_yaml_file")
+        iterate_over_courses courses_templates_to_merge
+    else
+        echo "File '$input_yaml_file' not found. Please try again."
+    fi
 done
 
+# Clear or create merged YAML file with a single "courses:" entry
+echo "courses: " > merged_courses.yaml
 
-# Load YAML variables into environment
-result=$(parse_yaml "$input_yaml_file" "")
-echo "$result"
 
-# Update LaTeX document based on YAML values
-#sed -i "s/\\title{.*}/\\title{${config_title}} % TITLE/" document.tex
-#sed -i "s/\\author{.*}/\\author{${config_author}} % AUTHOR/" document.tex
-#sed -i "s/\\date{.*}/\\date{${config_date}} % DATE/" document.tex
+for file in "${courses_templates_to_merge[@]}"; do 
+    echo "Processing file: $file"
+    
+    # Debug: show the content of the current file
+    cat "$file"
+    echo "------------------------------------------------------------------"
+    
+    # Append only the course entries (lines starting with '  - ') from the file
+    awk '/^[[:space:]]*-/{f=1} f{print}' "$file" >> merged_courses.yaml
+    
+    cat merged_courses.yaml
+    echo "------------------------------------------------------------------"
+done
 
-## Define the output LaTeX file
+# Display the merged YAML file
+cat merged_courses.yaml
+
+# Parse merged YAML (if you have parse_yaml function)
+# result=$(parse_yaml merged_courses.yaml "")
+# echo "$result"
+
+# Define the output LaTeX file
 output_latex_file=$1
-temp_file="temp.tex" 
 
-# Convert the YAML to LaTeX \cvitem entries
+temp_file="temp.tex"
+# Convert YAML content to LaTeX using awk
 awk '
     $1 == "-" {
         split($0, year_entry, ":")
         gsub(/"/, "", year_entry[2])
-        year = year_entry[2]  
+        year = year_entry[2]
         getline
         split($0, title_entry, ":")
         gsub(/"/, "", title_entry[2])
@@ -71,12 +90,72 @@ awk '
         split($0, institution_entry, ":")
         gsub(/"/, "", institution_entry[2])
         institution = institution_entry[2]
-        printf("    \\cvitem{%s}{%s}{%s}{}\n", year, title, institution)
+        getline
+        split($0, url_entry, ":")
+        gsub(/"/, "", url_entry[2])
+        url = url_entry[2]
+        # Output LaTeX entry for each course
+        printf("    \\cvitem{%s}{%s}{%s}{%s}\n", year, title, institution, url)
     }
-' "$input_yaml_file" > "$temp_file"
+' merged_courses.yaml > "$temp_file"
+
+sed -i.bak 's/\\&/\&/g' "$temp_file"
+
+cat temp.tex
+# Insert the LaTeX entries into the output file
+source ./insert_courses.sh "$output_latex_file" "$temp_file"
+
+# Clean up temporary file
+if [ -f temp.tex ]; then
+    rm temp.tex
+fi
+
+echo "LaTeX course entries have been generated and inserted into $output_latex_file."
+# Convert YAML content to LaTeX using awk
+
+
+# Clean up temporary file
+
+
+#for file in "${courses_templates_to_merge[@]}"; do
+#    sed '1d' "$file"  >> merged_courses.yaml
+#done
+
+#cat merged_courses.yaml
+
+# Load YAML variables into environment
+#result=$(parse_yaml merged_courses.yaml "")
+#echo "$result"
+
+# Update LaTeX document based on YAML values
+#sed -i "s/\\title{.*}/\\title{${config_title}} % TITLE/" document.tex
+#sed -i "s/\\author{.*}/\\author{${config_author}} % AUTHOR/" document.tex
+#sed -i "s/\\date{.*}/\\date{${config_date}} % DATE/" document.tex
+
+## Define the output LaTeX file
+#output_latex_file=$1
+#temp_file="temp.tex" 
+
+# Convert the YAML to LaTeX \cvitem entries
+#awk '
+#    $1 == "-" {
+#        split($0, year_entry, ":")
+#        gsub(/"/, "", year_entry[2])
+#        year = year_entry[2]  
+#        getline
+#        split($0, title_entry, ":")
+#        gsub(/"/, "", title_entry[2])
+#        title = title_entry[2]
+#        getline
+#        split($0, institution_entry, ":")
+#        gsub(/"/, "", institution_entry[2])
+#        institution = institution_entry[2]
+#        printf("    \\cvitem{%s}{%s}{%s}{}\n", year, title, institution)
+#    }
+#' merged_courses.yaml > "$temp_file"
 
 # Extract everything before \begin{cvtable} and after \end{cvtable}
-source ./insert_courses.sh "$output_latex_file" "$temp_file"
+#source ./insert_courses.sh "$output_latex_file" "$temp_file"
 
 
 
